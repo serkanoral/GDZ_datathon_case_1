@@ -1,0 +1,83 @@
+---
+title: "Model"
+author: "Serkan Oral"
+date: "2022-09-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+set.seed(123)
+rec <- train %>%
+  recipe(kesinti ~.) %>%
+  step_date(dates) %>% 
+  step_integer(dates) %>% 
+  step_novel(all_nominal_predictors()) %>% 
+  step_dummy(all_nominal_predictors())%>% 
+  step_downsample(kesinti, under_ratio = 2) 
+```
+
+```{r}
+set.seed(123)
+
+rf_spec <- boost_tree(trees = 1000,learn_rate = 0.0001) %>%  
+  set_engine("lightgbm") %>%
+  set_mode("classification")
+
+```
+
+```{r}
+set.seed(123)
+rf_wf <- workflow() %>%
+  add_recipe(rec,blueprint =
+               hardhat::default_recipe_blueprint(allow_novel_levels = TRUE)) %>%
+  add_model(rf_spec)
+```
+
+
+
+
+```{r}
+set.seed(123)
+rf_fit <- fit(rf_wf, train)
+```
+
+
+```{r}
+set.seed(123)
+prediction <- predict(rf_fit, test)
+```
+
+
+```{r}
+x<-  test %>% 
+  select(trafo_id, dates) %>% 
+  bind_cols(prediction)
+
+
+y <- x %>% 
+  unite(trafo_id_date, c(trafo_id,dates),sep = "__") %>% 
+  rename(kesinti = .pred_class) %>% 
+  group_by(trafo_id_date) %>% 
+  summarise(kesinti = max(as.numeric(levels(kesinti)[kesinti]))) %>% 
+  mutate(kesinti = as.logical(kesinti)) %>% 
+  rename(KESİNTİ = kesinti)
+
+
+write_csv(y, "submission.csv")
+```
+
+
+
+
+
+
+
+
+
+
+

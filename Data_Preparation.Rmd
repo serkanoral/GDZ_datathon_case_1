@@ -1,0 +1,174 @@
+---
+author: "Serkan Oral"
+date: "2022-09-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+
+library(tidyverse)
+library(tidymodels)
+library(lubridate)
+library(janitor)
+library(themis)
+library(naniar)
+library(corrplot)
+library(bonsai)
+library(baguette)
+library(nnet)
+library(timetk)
+
+```
+
+
+```{r}
+submission <-  read_csv("submission_test.csv") %>% 
+  clean_names()
+trafo <- read_csv("trafo.csv")%>% 
+  clean_names()
+train_data <- read_csv("train.csv")%>% 
+  clean_names()
+hava_durumu <- read_csv("hava_durumu.csv")%>% 
+  clean_names()
+```
+
+
+
+```{r}
+train_join <- train_data %>% left_join(trafo) 
+```
+
+
+```{r}
+submission_fix <- submission %>% 
+  separate(col = trafo_id_date,into = c("trafo_id", "tarih"),sep = "__") %>% 
+  mutate(trafo_id = as.numeric(trafo_id), tarih = ymd(tarih))
+```
+
+```{r}
+train_join_fix1 <- train_join %>% 
+  mutate(baslama_tarihi_ve_zamani = dmy_hms(baslama_tarihi_ve_zamani),baslama_tarihi = as_date(baslama_tarihi_ve_zamani))
+```
+
+```{r}
+train_join_fix2 <-  train_join_fix1 %>% 
+  mutate(il = case_when(il == "İZMİR" ~ "IZMIR",
+                        il == "MANİSA" ~ "MANISA"))
+```
+
+```{r}
+dates <- seq(ymd("2021-05-01"),ymd("2022-06-12"),"days")
+
+trafo_id <- train_join_fix1 %>%
+select(trafo_id) %>%
+distinct()
+```
+
+```{r}
+train_date_id <- tibble(dates,trafo_id = list(trafo_id))
+```
+
+
+```{r}
+train_date_id2 <- train_date_id %>% 
+unnest(trafo_id)
+```
+
+```{r}
+train_join_fix3 <-  train_date_id2 %>% 
+  left_join(train_join_fix2, by = c("dates" = "baslama_tarihi", "trafo_id" = "trafo_id"))
+
+
+```
+
+
+```{r}
+trafo_name <- trafo_id %>% 
+  left_join(train_join_fix2 %>% select(il,ilce, trafo_id), by = c("trafo_id" = "trafo_id"))
+```
+
+```{r}
+train_join_fix4  <- train_join_fix3 %>% 
+  select(-il,-ilce) %>% 
+  left_join(trafo_name, by = c("trafo_id" = "trafo_id") )
+
+
+train_join_fix5 <- train_join_fix4 %>% 
+  left_join(hava_durumu , by = c("dates" = "datetime", "il" = "name"))
+```
+
+
+```{r}
+train_join_fix6 <- train_join_fix5 %>% 
+  select(kesinti_no,dates,trafo_id,il:icon)
+
+```
+
+```{r}
+train_join_fix7 <- train_join_fix6%>% 
+  mutate(kesinti = if_else(is.na(kesinti_no), 0,1)) %>% 
+  select(-kesinti_no)
+```
+
+
+```{r}
+test_fix1  <- submission_fix %>% 
+  left_join(trafo_name, by = c("trafo_id" = "trafo_id") )%>% 
+  fill(il)
+
+
+test_fix2 <- test_fix1 %>% 
+  left_join(hava_durumu , by = c("tarih" = "datetime", "il" = "name"))
+
+test_fix3 <- test_fix2 %>% 
+  mutate(day_time = as.numeric( difftime(sunset,sunrise, units = "hours")))
+```
+
+
+```{r}
+train_join_fix8 <- train_join_fix7 %>% 
+  mutate(day_time = as.numeric( difftime(sunset,sunrise, units = "hours")))
+```
+
+```{r}
+train <- train_join_fix8 %>% 
+  mutate_if(is.character, as.factor)%>% 
+  mutate(kesinti = as_factor(kesinti)) %>% 
+  select(-preciptype,-severerisk, -ilce,-feelslikemax, -feelslikemin, -feelslike, -precipprob,-precipcover, -snowdepth, -cloudcover, -visibility, -uvindex, -moonphase, -description, -icon,-conditions,-sunrise, -sunset)
+
+
+
+test <- test_fix3 %>% 
+  mutate_if(is.character, as.factor)%>% 
+  rename(dates = tarih)%>% 
+  select(-preciptype,-severerisk, -ilce,-feelslikemax, -feelslikemin, -feelslike, -precipprob,-precipcover, -snowdepth, -cloudcover, -visibility, -uvindex, -moonphase, -description, -icon,-stations,-conditions,-sunrise, -sunset)
+
+
+
+test$kesinti <- as.factor(test$kesinti)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

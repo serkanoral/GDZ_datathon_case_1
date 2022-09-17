@@ -1,0 +1,245 @@
+---
+title: "EDA"
+author: "Serkan Oral"
+date: "2022-09-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+train %>% 
+  group_by(trafo_id) %>% 
+  summarise(toplam_kesinti = sum(as.numeric(levels(kesinti)[kesinti]))) %>% 
+  ggplot(aes(trafo_id,toplam_kesinti )) +
+  geom_col()
+
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti]))) %>% 
+  ggplot(aes(dates, kesinti, fill = kesinti)) +
+  geom_col() 
+```
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            tempmax = max(tempmax)) %>% 
+  ggplot(aes(dates, kesinti, fill = tempmax)) +
+  geom_col() 
+```
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            tempmin = min(tempmin)) %>% 
+  ggplot(aes(dates, kesinti, fill = tempmin)) +
+  geom_col()
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            temp = mean(temp)) %>% 
+  ggplot(aes(dates, kesinti, fill = temp)) +
+  geom_col() 
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            dew = max(dew)) %>% 
+  ggplot(aes(dates, kesinti, fill = dew)) +
+  geom_col() 
+```
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            humidity = max(humidity)) %>% 
+  ggplot(aes(dates, kesinti, fill = humidity)) +
+  geom_col() 
+```
+
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            precip = max(precip)) %>% 
+  ggplot(aes(dates, kesinti, fill = precip)) +
+  geom_col() 
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            precipprob = max(precipprob)) %>% 
+  ggplot(aes(dates, kesinti, fill = precipprob)) +
+  geom_col() 
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            precipcover = max(precipcover)) %>% 
+  ggplot(aes(dates, kesinti, fill = precipcover)) +
+  geom_col() 
+```
+
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            snow = max(snow)) %>% 
+  ggplot(aes(dates, kesinti, fill = snow)) +
+  geom_col() 
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            snowdepth = max(snowdepth)) %>% 
+  ggplot(aes(dates, kesinti, fill = snowdepth)) +
+  geom_col() 
+```
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            windgust = max(windgust)) %>% 
+  ggplot(aes(dates, kesinti, fill = windgust)) +
+  geom_col() 
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            windspeed = max(windspeed)) %>% 
+  ggplot(aes(dates, kesinti, fill = windspeed)) +
+  geom_col() 
+
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            winddir = max(winddir)) %>% 
+  ggplot(aes(dates, kesinti, fill = winddir)) +
+  geom_col() 
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            sealevelpressure = max(sealevelpressure)) %>% 
+  ggplot(aes(dates, kesinti, fill = sealevelpressure)) +
+  geom_col() 
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            cloudcover = max(cloudcover)) %>% 
+  ggplot(aes(dates, kesinti, fill = cloudcover)) +
+  geom_col() 
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            visibility = max(visibility)) %>% 
+  ggplot(aes(dates, kesinti, fill = visibility)) +
+  geom_col() 
+```
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            solarradiation = max(solarradiation)) %>% 
+  ggplot(aes(dates, kesinti, fill = solarradiation)) +
+  geom_col() 
+```
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            solarenergy = max(solarenergy)) %>% 
+  ggplot(aes(dates, kesinti, fill = solarenergy)) +
+  geom_col() 
+```
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            uvindex = max(uvindex)) %>% 
+  ggplot(aes(dates, kesinti, fill = uvindex)) +
+  geom_col() 
+```
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            moonphase = max(moonphase)) %>% 
+  ggplot(aes(dates, kesinti, fill = moonphase)) +
+  geom_col() 
+```
+
+
+```{r}
+train %>% 
+  group_by(dates) %>% 
+  summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
+            moonphase = max(moonphase)) %>% 
+  ggplot(aes(dates, kesinti, fill = moonphase)) +
+  geom_col() 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
