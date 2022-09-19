@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(trafo_id) %>% 
   summarise(toplam_kesinti = sum(as.numeric(levels(kesinti)[kesinti]))) %>% 
   ggplot(aes(trafo_id,toplam_kesinti )) +
@@ -19,7 +19,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti]))) %>% 
   ggplot(aes(dates, kesinti, fill = kesinti)) +
@@ -28,7 +28,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             tempmax = max(tempmax)) %>% 
@@ -38,7 +38,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             tempmin = min(tempmin)) %>% 
@@ -47,7 +47,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             temp = mean(temp)) %>% 
@@ -56,7 +56,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             dew = max(dew)) %>% 
@@ -66,7 +66,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             humidity = max(humidity)) %>% 
@@ -77,7 +77,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             precip = max(precip)) %>% 
@@ -86,7 +86,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             precipprob = max(precipprob)) %>% 
@@ -95,7 +95,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             precipcover = max(precipcover)) %>% 
@@ -106,7 +106,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             snow = max(snow)) %>% 
@@ -115,7 +115,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             snowdepth = max(snowdepth)) %>% 
@@ -125,7 +125,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             windgust = max(windgust)) %>% 
@@ -134,7 +134,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             windspeed = max(windspeed)) %>% 
@@ -144,7 +144,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             winddir = max(winddir)) %>% 
@@ -153,7 +153,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             sealevelpressure = max(sealevelpressure)) %>% 
@@ -162,7 +162,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             cloudcover = max(cloudcover)) %>% 
@@ -171,7 +171,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             visibility = max(visibility)) %>% 
@@ -180,7 +180,7 @@ train %>%
 ```
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             solarradiation = max(solarradiation)) %>% 
@@ -190,7 +190,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             solarenergy = max(solarenergy)) %>% 
@@ -200,7 +200,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             uvindex = max(uvindex)) %>% 
@@ -210,7 +210,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             moonphase = max(moonphase)) %>% 
@@ -220,7 +220,7 @@ train %>%
 
 
 ```{r}
-train %>% 
+train_plot %>% 
   group_by(dates) %>% 
   summarise(kesinti = sum(as.numeric(levels(kesinti)[kesinti])),
             moonphase = max(moonphase)) %>% 

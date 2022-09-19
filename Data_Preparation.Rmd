@@ -134,6 +134,14 @@ train_join_fix8 <- train_join_fix7 %>%
   mutate(day_time = as.numeric( difftime(sunset,sunrise, units = "hours")))
 ```
 
+
+```{r}
+train_plot <- train_join_fix8 %>% 
+  mutate_if(is.character, as.factor)%>% 
+  mutate(kesinti = as_factor(kesinti))
+```
+
+
 ```{r}
 train <- train_join_fix8 %>% 
   mutate_if(is.character, as.factor)%>% 
